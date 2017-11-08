@@ -169,5 +169,67 @@ namespace LiveCameraSample
 
             return DrawOverlay(baseImage, drawAction);
         }
+
+        internal static BitmapSource DrawKnownFaces(BitmapSource baseImage, KnownFace[] knownFaces)
+        {
+            if (knownFaces == null)
+            {
+                return baseImage;
+            }
+
+            Action<DrawingContext, double> drawAction = (drawingContext, annotationScale) =>
+            {
+                for (int i = 0; i < knownFaces.Length; i++)
+                {
+                    var knownFace = knownFaces[i];
+
+                    var face = knownFace.Face;
+                    if (face.FaceRectangle == null) { continue; }
+
+                    Rect faceRect = new Rect(
+                        face.FaceRectangle.Left, face.FaceRectangle.Top,
+                        face.FaceRectangle.Width, face.FaceRectangle.Height);
+                    string text = "";
+
+                    if (face.FaceAttributes != null)
+                    {
+                        text += Aggregation.SummarizeFaceAttributes(face.FaceAttributes);
+                    }
+
+                    text += ", Identity: " + knownFace.PersonName;
+
+                    faceRect.Inflate(6 * annotationScale, 6 * annotationScale);
+
+                    double lineThickness = 4 * annotationScale;
+
+                    drawingContext.DrawRectangle(
+                        Brushes.Transparent,
+                        new Pen(s_lineBrush, lineThickness),
+                        faceRect);
+
+                    if (text != "")
+                    {
+                        FormattedText ft = new FormattedText(text,
+                            CultureInfo.CurrentCulture, FlowDirection.LeftToRight, s_typeface,
+                            16 * annotationScale, Brushes.Black);
+
+                        var pad = 3 * annotationScale;
+
+                        var ypad = pad;
+                        var xpad = pad + 4 * annotationScale;
+                        var origin = new System.Windows.Point(
+                            faceRect.Left + xpad - lineThickness / 2,
+                            faceRect.Top - ft.Height - ypad + lineThickness / 2);
+                        var rect = ft.BuildHighlightGeometry(origin).GetRenderBounds(null);
+                        rect.Inflate(xpad, ypad);
+
+                        drawingContext.DrawRectangle(s_lineBrush, null, rect);
+                        drawingContext.DrawText(ft, origin);
+                    }
+                }
+            };
+
+            return DrawOverlay(baseImage, drawAction);
+        }
     }
 }

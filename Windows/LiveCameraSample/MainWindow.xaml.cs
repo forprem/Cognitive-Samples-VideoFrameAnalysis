@@ -69,6 +69,7 @@ namespace LiveCameraSample
         private LiveCameraResult _latestResultsToDisplay = null;
         private AppMode _mode;
         private DateTime _startTime;
+        private bool _identifyFaces = false;
 
         public enum AppMode
         {
@@ -175,16 +176,55 @@ namespace LiveCameraSample
         ///     and containing the faces returned by the API. </returns>
         private async Task<LiveCameraResult> FacesAnalysisFunction(VideoFrame frame)
         {
+            var personGroupId = "4f7a6371-32a2-458e-8e2b-97698fa721cc";
+
             // Encode image. 
             var jpg = frame.Image.ToMemoryStream(".jpg", s_jpegParams);
             // Submit image to API. 
             var attrs = new List<FaceAttributeType> { FaceAttributeType.Age,
                 FaceAttributeType.Gender, FaceAttributeType.HeadPose };
-            var faces = await _faceClient.DetectAsync(jpg, returnFaceAttributes: attrs);
+            var faces = await _faceClient.DetectAsync(jpg, returnFaceId: true, returnFaceAttributes: attrs);
+
+            var faceIds = faces.Select(face => face.FaceId).ToArray();
+            var identities = await _faceClient.IdentifyAsync(personGroupId, faceIds);
+
+            var knownFaces = new List<KnownFace>();
+
+            foreach(var face in faces)
+            {
+                var identity = identities.Where(x => x.FaceId == face.FaceId).SingleOrDefault();
+                var person = await _faceClient.GetPersonAsync(personGroupId, identity.Candidates[0].PersonId);
+
+                knownFaces.Add(new KnownFace
+                {
+                    Face = face,
+                    PersonId = person.PersonId,
+                    PersonName = person.Name
+                });
+            }
+
+            return new LiveCameraResult { KnownFaces = knownFaces.ToArray() };
+
+            //foreach(var result in identities)
+            //{
+                
+            //    if (result.Candidates.Length == 0)
+            //    {
+            //        Console.WriteLine("No one identified");
+            //    }
+            //    else
+            //    {
+            //        // Get top 1 among all candidates returned
+            //        var candidateId = result.Candidates[0].PersonId;
+            //        var person = await _faceClient.GetPersonAsync(personGroupId, candidateId);
+            //        Console.WriteLine("Identified as {0}", person.Name);
+            //    }
+            //}
+
             // Count the API call. 
             Properties.Settings.Default.FaceAPICallCount++;
             // Output. 
-            return new LiveCameraResult { Faces = faces };
+            //return new LiveCameraResult { Faces = faces };
         }
 
         /// <summary> Function which submits a frame to the Emotion API. </summary>
@@ -296,8 +336,15 @@ namespace LiveCameraSample
                     MatchAndReplaceFaceRectangles(result.Faces, clientFaces);
                 }
 
-                visImage = Visualization.DrawFaces(visImage, result.Faces, result.EmotionScores, result.CelebrityNames);
-                visImage = Visualization.DrawTags(visImage, result.Tags);
+                if (!_identifyFaces)
+                {
+                    visImage = Visualization.DrawFaces(visImage, result.Faces, result.EmotionScores, result.CelebrityNames);
+                    visImage = Visualization.DrawTags(visImage, result.Tags);
+                }
+                else
+                {
+                    visImage = Visualization.DrawKnownFaces(visImage, result.KnownFaces);
+                }
             }
 
             return visImage;
@@ -484,6 +531,11 @@ namespace LiveCameraSample
                 OpenCvSharp.Rect r = sortedClientRects[i];
                 sortedResultFaces[i].FaceRectangle = new FaceRectangle { Left = r.Left, Top = r.Top, Width = r.Width, Height = r.Height };
             }
+        }
+
+        private void btn_Identify_Click(object sender, RoutedEventArgs e)
+        {
+            _identifyFaces = !_identifyFaces;
         }
     }
 }

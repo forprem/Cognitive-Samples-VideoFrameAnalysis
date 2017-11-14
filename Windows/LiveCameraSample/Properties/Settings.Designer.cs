@@ -9,10 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace LiveCameraSample.Properties {
-
-
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -22,7 +22,7 @@ namespace LiveCameraSample.Properties {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -34,31 +34,7 @@ namespace LiveCameraSample.Properties {
                 this["FaceAPIKey"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EmotionAPIKey {
-            get {
-                return ((string)(this["EmotionAPIKey"]));
-            }
-            set {
-                this["EmotionAPIKey"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string VisionAPIKey {
-            get {
-                return ((string)(this["VisionAPIKey"]));
-            }
-            set {
-                this["VisionAPIKey"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
@@ -70,10 +46,10 @@ namespace LiveCameraSample.Properties {
                 this["SettingsPanelVisibility"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:00:03")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:00:10")]
         public global::System.TimeSpan AnalysisInterval {
             get {
                 return ((global::System.TimeSpan)(this["AnalysisInterval"]));
@@ -82,7 +58,7 @@ namespace LiveCameraSample.Properties {
                 this["AnalysisInterval"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
@@ -94,31 +70,7 @@ namespace LiveCameraSample.Properties {
                 this["FaceAPICallCount"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int EmotionAPICallCount {
-            get {
-                return ((int)(this["EmotionAPICallCount"]));
-            }
-            set {
-                this["EmotionAPICallCount"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int VisionAPICallCount {
-            get {
-                return ((int)(this["VisionAPICallCount"]));
-            }
-            set {
-                this["VisionAPICallCount"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
@@ -130,49 +82,37 @@ namespace LiveCameraSample.Properties {
                 this["AutoStopEnabled"] = value;
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:05:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:02:00")]
         public global::System.TimeSpan AutoStopTime {
             get {
                 return ((global::System.TimeSpan)(this["AutoStopTime"]));
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://westus.api.cognitive.microsoft.com/face/v1.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PersonGroupID {
+            get {
+                return ((string)(this["PersonGroupID"]));
+            }
+            set {
+                this["PersonGroupID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://eastus2.api.cognitive.microsoft.com/face/v1.0")]
         public string FaceAPIHost {
             get {
                 return ((string)(this["FaceAPIHost"]));
             }
             set {
                 this["FaceAPIHost"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://westus.api.cognitive.microsoft.com/emotion/v1.0")]
-        public string EmotionAPIHost {
-            get {
-                return ((string)(this["EmotionAPIHost"]));
-            }
-            set {
-                this["EmotionAPIHost"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://westus.api.cognitive.microsoft.com/vision/v1.0")]
-        public string VisionAPIHost {
-            get {
-                return ((string)(this["VisionAPIHost"]));
-            }
-            set {
-                this["VisionAPIHost"] = value;
             }
         }
     }
